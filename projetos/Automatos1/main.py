@@ -12,6 +12,9 @@ from pydoc import Doc
 
 
 def simulate_dfa(dfa, input):
+    '''
+    Função que simula um dfa a partir de um arquivo e de um input de uma cadeia 
+    '''
     dfa_list = list(dfa.values())  # criando uma lista com os valores do dicionário dfa para fácil manipulação
 
     state = dfa_list[1]   # estado inicial 
@@ -52,8 +55,30 @@ def simulate_dfa(dfa, input):
         print(f"A cadeia {initial_input} foi rejeitada pelo autômato!")
         print()
 
+def get_file():
+    '''
+    O usuário digita o nome do arquivo e o programa 
+    tenta abrir o arquivo e,
+    caso o arquivo não for encontrado ou ocorrer algum erro pede para verificar se está tudo certo e tentar novamente, 
+    
+    '''
+    while True:
+        try:
+            filename = input("Digite o nome do arquivo: ")
+            with open(filename) as dfa_file:
+                dfa_data = dfa_file.read()
+        except OSError:
+        
+            print('Erro ao acessar o arquivo. Verifique se o nome do arquivo está correto e se ele está no mesmo diretório que o main.py e tente novamente.')
+        else:
+            return dfa_data
+
 
 def main():
+    '''
+    Função que chama a função simulate_dfa, exibe uma pequena interface para o programa e 
+    exibe mensagem de programa finalizado caso CTRL + C for apertado
+    '''
     try:
         print()
         print("=" * 80)
@@ -70,11 +95,7 @@ def main():
         print()
         print("=" * 80)
 
-## Entrada do nome do arquivo do dfa pelo usuário
-file_name = input("Digite o nome do arquivo: ")
-
-with open(file_name) as dfa_file:
-    dfa_data = dfa_file.read()
+dfa_data = get_file()
 
 dfa = eval(dfa_data)
 
