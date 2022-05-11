@@ -7,17 +7,11 @@ DFA Simulator:
 
 '''
 
-
-from pydoc import Doc
-
-
 def simulate_dfa(dfa, input):
     '''
     Função que simula um dfa a partir de um arquivo e de um input de uma cadeia 
     '''
-    dfa_list = list(dfa.values())  # criando uma lista com os valores do dicionário dfa para fácil manipulação
-
-    state = dfa_list[1]   # estado inicial 
+    state = dfa['initial_state']   # estado inicial 
     accept = False
     initial_input = input # armazenando a cadeia para mostrar se ela foi aceita ou rejeitada
     input = list(input)   # transformando a cadeia digitada pelo usuário em uma lista para fácil manipulação
@@ -25,25 +19,25 @@ def simulate_dfa(dfa, input):
 
         c = input.pop(0)
 
-        if(c not in dfa_list[2]):
+        if(c not in dfa['sigma']):
             # Insere c de volta na cadeia, exibe mensagem de erro e sai do loop se c não está no alfabeto do dfa
             input.insert(0, c)
             print(f"o símbolo {c} não pertence ao alfabeto do autômato!")
             break
 
-        if(state not in dfa_list[0]):
+        if(state not in dfa['states']):
             # Se o estado não estiver na lista de estados do dfa exibe mensagem de erro e sai do loop
             print(f"o estado {state} não pertence conjunto de estados do autômato!")
             break
         try:
             # Tenta exibir os estados transitados durante a simulação
-            print(f"({state}, '{c}') ->  {dfa_list[3][(state,c)]}")
-            state = dfa_list[3][(state, c)]
+            print(f"({state}, '{c}') ->  {dfa['delta'][(state,c)]}")
+            state = dfa['delta'][(state, c)]
         except KeyError:
             # Caso não conseguir exibe mensagem de erro e sai do loop
             print(f"Não foi possível realizar a transição do estado {state} com entrada {c}")
             break
-    if (state in dfa_list[4] and len(input) == 0):
+    if (state in dfa['final_states'] and len(input) == 0):
         # Verifica se o estado atual está na lista de estados finais e se a cadeia toda foi percorrida
         accept = True
     if(accept):
